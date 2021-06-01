@@ -1,0 +1,1 @@
+enum ClockButton { back, plus, run, minus, ok }
