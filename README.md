@@ -40,22 +40,32 @@ for that please take a look at the package we depend on:
 Connect to a connected board and listen to its events:
 ```dart
 List<UsbDevice> devices = await UsbSerial.listDevices();
-List<UsbDevice> dgtDevices = devices.where((d) => d.vid == 1115).toList();
+    List<UsbDevice> dgtDevices = devices.where((d) => d.vid == 1115).toList();
+    UsbPort usbDevice = await dgtDevices[0].create();
 
-if (dgtDevices.length > 0) {
-    // connect to board and initialize
-    DGTBoard nBoard = new DGTBoard(await dgtDevices[0].create());
-    await nBoard.init();
-    print("DGTBoard connected - SerialNumber: " + nBoard.getSerialNumber() + " Version: " + nBoard.getVersion());
-    
-    // listen to update stream
-    nBoard.getBoardDetailedUpdateStream().listen((update) {
-        print(update.getNotation());
+    DGTCommunicationClient client = DGTCommunicationClient((List<int> message) async {
+      usbDevice.write(message);
     });
+    usbDevice.inputStream.listen(client.handleReceive);
+    
 
-    // set board to update mode
-    nBoard.setBoardToUpdateMode();
-}
+    if (dgtDevices.length > 0) {
+      // connect to board and initialize
+      DGTBoard nBoard = new DGTBoard();
+      await nBoard.init(client);
+      print("DGTBoard connected - SerialNumber: " +
+          nBoard.getSerialNumber() +
+          " Version: " +
+          nBoard.getVersion());
+
+      // set connected board
+      setState(() {
+        connectedBoard = nBoard;
+      });
+
+      // set board to update mode
+      nBoard.setBoardToUpdateMode();
+    }
 ```
 
 ## In action
