@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:dgtdriver/DGTCommunicationClient.dart';
 import 'package:dgtdriver/models/FieldUpdate.dart';
 import 'package:dgtdriver/models/ClockMessage.dart';
@@ -45,9 +47,9 @@ class _MyHomePageState extends State<MyHomePage> {
     UsbPort usbDevice = await dgtDevices[0].create();
 
     DGTCommunicationClient client = DGTCommunicationClient((List<int> message) async {
-      usbDevice.write(message);
+      usbDevice.write(Uint8List.fromList(message));
     });
-    usbDevice.inputStream.listen(client.handleReceive);
+    usbDevice.inputStream.listen((Uint8List message) => client.handleReceive(message.toList()));
     
 
     if (dgtDevices.length > 0) {

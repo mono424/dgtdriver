@@ -1,12 +1,12 @@
 # dgtdriver
 
-The dgtdriver flutter package allows you to quickly get you dgt-usb-board connected
+The dgtdriver flutter package allows you to quickly get you dgt-board connected
 to your Android application.
 
 ![preview](https://user-images.githubusercontent.com/17506411/114317384-1a680380-9b08-11eb-8484-b263743d43f6.gif)
 
 
-## Getting Started
+## Getting Started with dgtdriver + usb_serial
 
 Add dependencies to `pubspec.yaml`
 ```
@@ -44,9 +44,9 @@ List<UsbDevice> devices = await UsbSerial.listDevices();
     UsbPort usbDevice = await dgtDevices[0].create();
 
     DGTCommunicationClient client = DGTCommunicationClient((List<int> message) async {
-      usbDevice.write(message);
+      usbDevice.write(Uint8List.fromList(message));
     });
-    usbDevice.inputStream.listen(client.handleReceive);
+    usbDevice.inputStream.listen((Uint8List message) => client.handleReceive(message.toList()));
     
 
     if (dgtDevices.length > 0) {
