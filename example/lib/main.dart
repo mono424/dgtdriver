@@ -4,7 +4,7 @@ import 'package:dgtdriver/models/ClockMessage.dart';
 import 'package:dgtdriver/protocol/ClockAnswerType.dart';
 import 'package:dgtdriver/protocol/ClockButton.dart';
 import 'package:flutter/material.dart';
-import 'package:dgtdriver/dgtdriver.dart';
+import 'package:dgtdriver/DGTBoard.dart';
 import 'package:usb_serial/usb_serial.dart';
 
 void main() {
