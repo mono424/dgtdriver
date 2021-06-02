@@ -1,16 +1,18 @@
 import 'dart:async';
 
-class DGTCommunicationClient {
-  final Future<void> Function(List<int>) send;
-  final StreamController<List<int>> _inputStreamController = StreamController<List<int>>();
+import 'dart:typed_data';
 
-  Stream<List<int>> get receiveStream {
+class DGTCommunicationClient {
+  final Future<void> Function(Uint8List) send;
+  final StreamController<Uint8List> _inputStreamController = StreamController<Uint8List>();
+
+  Stream<Uint8List> get receiveStream {
     return _inputStreamController.stream.asBroadcastStream();
   }
 
   DGTCommunicationClient(this.send);
 
-  handleReceive(List<int> message) {
+  handleReceive(Uint8List message) {
     _inputStreamController.add(message);
   }
 }

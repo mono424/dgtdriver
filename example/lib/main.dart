@@ -46,8 +46,8 @@ class _MyHomePageState extends State<MyHomePage> {
     List<UsbDevice> dgtDevices = devices.where((d) => d.vid == 1115).toList();
     UsbPort usbDevice = await dgtDevices[0].create();
 
-    DGTCommunicationClient client = DGTCommunicationClient((List<int> message) async {
-      usbDevice.write(Uint8List.fromList(message));
+    DGTCommunicationClient client = DGTCommunicationClient((Uint8List message) async {
+      usbDevice.write(message);
     });
     usbDevice.inputStream.listen((Uint8List message) => client.handleReceive(message.toList()));
     

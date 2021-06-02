@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:dgtdriver/DGTCommunicationClient.dart';
 import 'package:dgtdriver/DGTMessage.dart';
 import 'package:dgtdriver/protocol/Answer.dart';
@@ -6,17 +8,17 @@ abstract class Command<T> {
   int code;
   Answer<T> answer;
 
-  Future<List<int>> messageBuilder() async {
-    return [code];
+  Future<Uint8List> messageBuilder() async {
+    return Uint8List.fromList([code]);
   }
 
-  Future<void> send(DGTCommunicationClient characteristic) async {
-    await characteristic.send(await messageBuilder());
+  Future<void> send(DGTCommunicationClient client) async {
+    await client.send(await messageBuilder());
   }
 
-  Future<T> request(DGTCommunicationClient characteristic, Stream<DGTMessage> inputStream) async {
+  Future<T> request(DGTCommunicationClient client, Stream<DGTMessage> inputStream) async {
     Future<T> result = getReponse(inputStream);
-    await send(characteristic);
+    await send(client);
     return result;
   }
 

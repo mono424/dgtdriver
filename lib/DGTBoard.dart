@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:dgtdriver/DGTCommunicationClient.dart';
 import 'package:dgtdriver/DGTMessage.dart';
@@ -58,7 +59,8 @@ class DGTBoard {
     }
   }
 
-  void _handleInputStream(List<int> chunk) {
+  void _handleInputStream(Uint8List rawChunk) {
+    List<int> chunk = rawChunk.toList();
     print("received chunk ...");
     print(chunk);
     if (_buffer == null)
