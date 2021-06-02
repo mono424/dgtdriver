@@ -42,13 +42,11 @@ Connect to a connected board and listen to its events:
 List<UsbDevice> devices = await UsbSerial.listDevices();
     List<UsbDevice> dgtDevices = devices.where((d) => d.vid == 1115).toList();
     UsbPort usbDevice = await dgtDevices[0].create();
+    await usbDevice.open();
 
-    DGTCommunicationClient client = DGTCommunicationClient((List<int> message) async {
-      usbDevice.write(Uint8List.fromList(message));
-    });
-    usbDevice.inputStream.listen((Uint8List message) => client.handleReceive(message.toList()));
+    DGTCommunicationClient client = DGTCommunicationClient(usbDevice.write);
+    usbDevice.inputStream.listen(client.handleReceive);
     
-
     if (dgtDevices.length > 0) {
       // connect to board and initialize
       DGTBoard nBoard = new DGTBoard();
