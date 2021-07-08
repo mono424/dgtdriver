@@ -61,8 +61,7 @@ class DGTBoard {
 
   void _handleInputStream(Uint8List rawChunk) {
     List<int> chunk = rawChunk.toList();
-    print("received chunk ...");
-    print(chunk);
+    //print("received chunk ...");
     if (_buffer == null)
       _buffer = chunk.toList();
     else
@@ -72,14 +71,16 @@ class DGTBoard {
       DGTMessage message = DGTMessage.parse(_buffer);
       _inputStreamController.add(message);
       _buffer.removeRange(0, message.getLength());
+      //print("Received valid message");
     } on DGTInvalidMessageException {
       _buffer = skipBadBytes(1, _buffer);
     } on DGTInvalidMsbException {
       _buffer = skipBadBytes(2, _buffer);
     } on DGTInvalidLsbException {
       _buffer = skipBadBytes(3, _buffer);
+    } on DGTMessageToShortException {
     } catch (err) {
-      print("Unknown parse-error: " + err.toString());
+      //print("Unknown parse-error: " + err.toString());
     }
   }
 
