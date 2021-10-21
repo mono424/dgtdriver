@@ -1,6 +1,6 @@
-## [0.0.1+3] - Added preview gif
+## [0.0.3] - Add Errors to stream
 
-* Added preview gif
+* Adds parse errors to stream for potential external handling
 
 ## [0.0.1+2] - Added example
 

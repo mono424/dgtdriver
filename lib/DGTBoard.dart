@@ -72,15 +72,20 @@ class DGTBoard {
       _inputStreamController.add(message);
       _buffer.removeRange(0, message.getLength());
       //print("Received valid message");
-    } on DGTInvalidMessageException {
+    } on DGTInvalidMessageException catch (e) {
       _buffer = skipBadBytes(1, _buffer);
-    } on DGTInvalidMsbException {
+      _inputStreamController.addError(e);
+    } on DGTInvalidMsbException catch (e) {
       _buffer = skipBadBytes(2, _buffer);
-    } on DGTInvalidLsbException {
+      _inputStreamController.addError(e);
+    } on DGTInvalidLsbException catch (e) {
       _buffer = skipBadBytes(3, _buffer);
-    } on DGTMessageToShortException {
+      _inputStreamController.addError(e);
+    } on DGTMessageToShortException catch (_) {
+      //_inputStreamController.addError(e);
     } catch (err) {
       //print("Unknown parse-error: " + err.toString());
+      _inputStreamController.addError(err);
     }
   }
 
