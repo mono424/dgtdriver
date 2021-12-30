@@ -3,11 +3,14 @@ import 'dart:typed_data';
 
 import 'package:dgtdriver/DGTCommunicationClient.dart';
 import 'package:dgtdriver/DGTMessage.dart';
+import 'package:dgtdriver/models/BatteryStatus.dart';
 import 'package:dgtdriver/models/ClockMessage.dart';
 import 'package:dgtdriver/models/FieldUpdate.dart';
+import 'package:dgtdriver/models/LEDPattern.dart';
 import 'package:dgtdriver/models/Piece.dart';
 import 'package:dgtdriver/protocol/ClockAnswer.dart';
 import 'package:dgtdriver/protocol/DGTProtocol.dart';
+import 'package:dgtdriver/protocol/commands/BatteryUpdate.dart';
 import 'package:dgtdriver/protocol/commands/FieldUpdate.dart';
 import 'package:dgtdriver/protocol/commands/GetBoard.dart';
 import 'package:dgtdriver/protocol/commands/GetClockInfo.dart';
@@ -19,8 +22,10 @@ import 'package:dgtdriver/protocol/commands/SendClockBeep.dart';
 import 'package:dgtdriver/protocol/commands/SendClockSet.dart';
 import 'package:dgtdriver/protocol/commands/SendReset.dart';
 import 'package:dgtdriver/protocol/commands/SendUpdate.dart';
+import 'package:dgtdriver/protocol/commands/SendUpdateBattery.dart';
 import 'package:dgtdriver/protocol/commands/SendUpdateBoard.dart';
 import 'package:dgtdriver/protocol/commands/SendUpdateNice.dart';
+import 'package:dgtdriver/protocol/commands/SetLEDPattern.dart';
 
 class DGTBoard {
   
@@ -71,7 +76,8 @@ class DGTBoard {
       DGTMessage message = DGTMessage.parse(_buffer);
       _inputStreamController.add(message);
       _buffer.removeRange(0, message.getLength());
-      //print("Received valid message");
+      print("Received valid message: " + message.getCode().toString());
+      print("-> " + message.getMessage().toString());
     } on DGTInvalidMessageException catch (e) {
       _buffer = skipBadBytes(1, _buffer);
       _inputStreamController.addError(e);
@@ -110,6 +116,10 @@ class DGTBoard {
     _lastSeen = getBoardState();
     getBoardDetailedUpdateStream().listen(_handleBoardUpdate);
     getClockUpdateStream().listen(_handleClockUpdate);
+  }
+
+  bool get isPegasusBoard {
+    return _version == "1.0";
   }
 
   String getSerialNumber() {
@@ -172,6 +182,13 @@ class DGTBoard {
 
       _boardState = newBoardState;
     }
+    
+  }
+
+  /// Board will notify on battery percentage change
+  Future<void> setBoardToUpdateBatteryMode() async {
+    if (!isPegasusBoard) return;
+    await SendUpdateBatteryCommand().send(_client);
   }
 
   /// Board will notify on board events
@@ -187,6 +204,13 @@ class DGTBoard {
   /// Board will notify on board and clock events
   Future<void> setBoardToUpdateNiceMode() async {
     await SendUpdateNiceCommand().send(_client);
+  }
+
+  Stream<BatteryStatus> getBatteryUpdateStream() {
+    return getInputStream()
+        .where(
+            (DGTMessage msg) => msg.getCode() == BatteryUpdateAnswer().code)
+        .map((DGTMessage msg) => BatteryUpdateAnswer().process(msg.getMessage()));
   }
 
   Stream<ClockMessage> getClockUpdateStream() {
@@ -214,5 +238,10 @@ class DGTBoard {
       return DetailedFieldUpdate(
           piece: f.piece, field: f.field, action: FieldUpdateAction.setdown);
     }).asBroadcastStream();
+  }
+
+  Future<void> setLEDPattern(LEDPattern pattern) async {
+    if (!isPegasusBoard) return;
+    await SetLEDPatternCommand(pattern).send(_client);
   }
 }

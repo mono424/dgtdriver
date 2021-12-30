@@ -13,6 +13,7 @@ abstract class Command<T> {
   }
 
   Future<void> send(DGTCommunicationClient client) async {
+    print(await messageBuilder());
     await client.send(await messageBuilder());
   }
 
