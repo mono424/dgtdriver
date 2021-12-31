@@ -122,7 +122,6 @@ class DGTBoard {
     _version = await GetVersionCommand().request(_client, _inputStream);
 
     if (isPegasusBoard) {
-      setBoardOrientation(true);
       await MagicPegasusHandshakeCommand().send(_client);
       _pegasusDeviceInfo = await RequestDeviceInfoCommand().request(_client, _inputStream);
       await SendResetCommand().send(_client);
