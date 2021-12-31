@@ -1,5 +1,3 @@
-import 'package:dgtdriver/protocol/DGTProtocol.dart';
-
 class LEDPattern {
   final LEDPatternSpeed speed;
   final LEDPatternRepeat repeat;
@@ -13,10 +11,6 @@ class LEDPatternField {
   final int index;
 
   LEDPatternField(this.index);
-
-  static LEDPatternField fromAlgebra(String field) {
-    return LEDPatternField(DGTProtocol.squares.indexOf(field.toLowerCase()));
-  }
 }
 
 enum LEDPatternSpeed {

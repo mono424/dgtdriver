@@ -1,10 +1,7 @@
 import 'package:dgtdriver/models/Piece.dart';
 
 abstract class DGTProtocol {
-  static bool reverseBoardOrientation = false;
-  static List<String> get squares => reverseBoardOrientation ? _SQUARES.reversed.toList() : _SQUARES;
-
-  static const List<String> _SQUARES = [
+  static const List<String> SQUARES = [
     'h1',
     'g1',
     'f1',

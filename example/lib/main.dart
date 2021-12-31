@@ -175,14 +175,14 @@ class _MyHomePageState extends State<MyHomePage> {
       brightness: LEDPatternBrightness.high,
       repeat: LEDPatternRepeat.once,
       fields: [
-        LEDPatternField.fromAlgebra("a1"),
-        LEDPatternField.fromAlgebra("b2"),
-        LEDPatternField.fromAlgebra("c3"),
-        LEDPatternField.fromAlgebra("d4"),
-        LEDPatternField.fromAlgebra("e5"),
-        LEDPatternField.fromAlgebra("f6"),
-        LEDPatternField.fromAlgebra("g7"),
-        LEDPatternField.fromAlgebra("h8"),
+        connectedBoard.ledPatternFieldFromAlgebra("a1"),
+        connectedBoard.ledPatternFieldFromAlgebra("b2"),
+        connectedBoard.ledPatternFieldFromAlgebra("c3"),
+        connectedBoard.ledPatternFieldFromAlgebra("d4"),
+        connectedBoard.ledPatternFieldFromAlgebra("e5"),
+        connectedBoard.ledPatternFieldFromAlgebra("f6"),
+        connectedBoard.ledPatternFieldFromAlgebra("g7"),
+        connectedBoard.ledPatternFieldFromAlgebra("h8"),
       ]
     ));
   }

@@ -4,9 +4,12 @@ import 'package:dgtdriver/protocol/DGTProtocol.dart';
 
 class FieldUpdateAnswer extends Answer<FieldUpdate> {
   final int code = 0x0e;
+  final List<String> squares;
+
+  FieldUpdateAnswer(this.squares);
 
   FieldUpdate process(List<int> msg) {
     return FieldUpdate(
-        field: DGTProtocol.squares[msg[0]], piece: DGTProtocol.PIECES[msg[1]]);
+        field: squares[msg[0]], piece: DGTProtocol.PIECES[msg[1]]);
   }
 }
