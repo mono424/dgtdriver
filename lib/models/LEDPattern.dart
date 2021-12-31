@@ -15,7 +15,7 @@ class LEDPatternField {
   LEDPatternField(this.index);
 
   static LEDPatternField fromAlgebra(String field) {
-    return LEDPatternField(DGTProtocol.squares.reversed.toList().indexOf(field.toLowerCase()));
+    return LEDPatternField(DGTProtocol.squares.indexOf(field.toLowerCase()));
   }
 }
 
