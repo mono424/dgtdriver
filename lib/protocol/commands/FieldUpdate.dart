@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:dgtdriver/models/FieldUpdate.dart';
 import 'package:dgtdriver/protocol/Answer.dart';
 import 'package:dgtdriver/protocol/DGTProtocol.dart';

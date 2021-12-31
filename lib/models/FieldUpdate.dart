@@ -26,7 +26,7 @@ class DetailedFieldUpdate extends FieldUpdate {
       : super(field: field, piece: piece);
 
   String getNotation({bool takes = false, String from = ""}) {
-    if (piece == null || action == FieldUpdateAction.pickup) return "";
+    if (piece == null || piece is PegasusPiece || action == FieldUpdateAction.pickup) return "";
     return piece.notation + from + (takes ? "x" : "") + field;
   }
 
