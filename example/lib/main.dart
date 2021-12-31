@@ -175,14 +175,14 @@ class _MyHomePageState extends State<MyHomePage> {
       brightness: LEDPatternBrightness.high,
       repeat: LEDPatternRepeat.once,
       fields: [
-        // LEDPatternField.fromAlgebra("e7"),
-        LEDPatternField.fromAlgebra("e6"),
-        // LEDPatternField.fromAlgebra("c3"),
-        // LEDPatternField.fromAlgebra("d4"),
-        // LEDPatternField.fromAlgebra("e5"),
-        // LEDPatternField.fromAlgebra("f6"),
-        // LEDPatternField.fromAlgebra("g7"),
-        // LEDPatternField.fromAlgebra("h8"),
+        LEDPatternField.fromAlgebra("a1"),
+        LEDPatternField.fromAlgebra("b2"),
+        LEDPatternField.fromAlgebra("c3"),
+        LEDPatternField.fromAlgebra("d4"),
+        LEDPatternField.fromAlgebra("e5"),
+        LEDPatternField.fromAlgebra("f6"),
+        LEDPatternField.fromAlgebra("g7"),
+        LEDPatternField.fromAlgebra("h8"),
       ]
     ));
   }
@@ -242,7 +242,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   Text("Last Update: "),
                   Text("Square: " + fieldUpdate.field),
                   Text("Action: " + fieldUpdate.action.toString()),
-                  Text("Piece: " + fieldUpdate.piece.role + " (" + fieldUpdate.piece.color + ")"),
+                  Text("Piece: " + fieldUpdate.piece.toString()),
                   Text("Notation: " + fieldUpdate.getNotation()),
                 ],
               );
