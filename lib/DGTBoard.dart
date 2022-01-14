@@ -37,8 +37,6 @@ class DGTBoard {
   Stream<DGTMessage> _inputStream;
   List<int> _buffer;
 
-  bool _boardOrientationReversed = false;
-
   String _serialNumber;
   String _version;
   Map<String, Piece> _boardState;
@@ -124,13 +122,12 @@ class DGTBoard {
     _version = await GetVersionCommand().request(_client, _inputStream);
 
     if (isPegasusBoard) {
-      _boardOrientationReversed = true;
       await MagicPegasusHandshakeCommand().send(_client);
       _pegasusDeviceInfo = await RequestDeviceInfoCommand().request(_client, _inputStream);
       await SendResetCommand().send(_client);
     }
 
-    _setBoardState(await GetBoardCommand(squares()).request(_client, _inputStream));
+    _setBoardState(await GetBoardCommand().request(_client, _inputStream));
     _lastSeen = getBoardState();
     getBoardDetailedUpdateStream().listen(_handleBoardUpdate);
     getClockUpdateStream().listen(_handleClockUpdate);
@@ -192,29 +189,6 @@ class DGTBoard {
    * Board Modes - Sets the board to the desired mode
    */
 
-  /// Reverse Board orientation
-  void setBoardOrientation(bool reversed) async {
-    bool prevOrientation = _boardOrientationReversed;
-    if (prevOrientation != reversed) {
-      List<String> oldSquares = DGTProtocol.SQUARES;
-      Map<String, Piece> oldBoardState = getBoardState();
-      Map<String, Piece> newBoardState = {};
-
-      _boardOrientationReversed = reversed;
-      List<String> newSquares = DGTProtocol.SQUARES;
-
-      for (var i = 0; i < newSquares.length; i++) {
-        newBoardState[newSquares[i]] = oldBoardState[oldSquares[i]];
-      }
-
-      _setBoardState(newBoardState);
-    }
-  }
-
-  bool get isOrientationReversed {
-    return _boardOrientationReversed;
-  }
-
   /// Board will notify on battery percentage change
   Future<void> setBoardToUpdateBatteryMode() async {
     if (!isPegasusBoard) return;
@@ -255,8 +229,8 @@ class DGTBoard {
   Stream<FieldUpdate> getBoardUpdateStream() {
     return getInputStream()
         .where(
-            (DGTMessage msg) => msg.getCode() == FieldUpdateAnswer(squares()).code)
-        .map((DGTMessage msg) => FieldUpdateAnswer(squares()).process(msg.getMessage()))
+            (DGTMessage msg) => msg.getCode() == FieldUpdateAnswer().code)
+        .map((DGTMessage msg) => FieldUpdateAnswer().process(msg.getMessage()))
         .map((FieldUpdate update) => 
           isPegasusBoard && update.piece != null 
           ? FieldUpdate(field: update.field, piece: PegasusPiece())
@@ -282,11 +256,7 @@ class DGTBoard {
     await SetLEDPatternCommand(pattern).send(_client);
   }
 
-  List<String> squares() {
-    return _boardOrientationReversed ? DGTProtocol.SQUARES.reversed.toList() : DGTProtocol.SQUARES;
-  }
-
   LEDPatternField ledPatternFieldFromAlgebra(String field) {
-    return LEDPatternField(squares().indexOf(field.toLowerCase()));
+    return LEDPatternField(DGTProtocol.SQUARES.indexOf(field.toLowerCase()));
   }
 }
