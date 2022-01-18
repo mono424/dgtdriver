@@ -165,6 +165,10 @@ class DGTBoard {
     return GetClockInfoCommand().request(_client, _inputStream);
   }
 
+  Future<BatteryStatus> getBatteryUpdate() {
+    return SendUpdateBatteryCommand().request(_client, _inputStream);
+  }
+
   /*
    * DGT Clock
    */

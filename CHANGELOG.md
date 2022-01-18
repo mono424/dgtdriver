@@ -1,3 +1,7 @@
+## [0.1.2] - Add Errors to stream
+
+* Adds battery status command
+
 ## [0.0.3] - Add Errors to stream
 
 * Adds parse errors to stream for potential external handling
