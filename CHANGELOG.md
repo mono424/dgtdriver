@@ -1,3 +1,7 @@
+## [0.1.3] - Add Errors to stream
+
+* Fix wrong return type
+
 ## [0.1.2] - Add Errors to stream
 
 * Adds battery status command
