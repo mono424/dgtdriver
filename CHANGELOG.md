@@ -1,3 +1,7 @@
+## [0.2.0] - Add DGT Pegasus DeveloperKey Option
+
+* Add DGT Pegasus DeveloperKey Option
+
 ## [0.1.3] - Add Errors to stream
 
 * Fix wrong return type

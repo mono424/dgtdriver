@@ -17,7 +17,7 @@ import 'package:dgtdriver/protocol/commands/GetClockInfo.dart';
 import 'package:dgtdriver/protocol/commands/GetClockVersion.dart';
 import 'package:dgtdriver/protocol/commands/GetSerialNumber.dart';
 import 'package:dgtdriver/protocol/commands/GetVersion.dart';
-import 'package:dgtdriver/protocol/commands/MagicPegasusHandshakeCommand.dart';
+import 'package:dgtdriver/protocol/commands/AuthorizeWithDeveloperKey.dart';
 import 'package:dgtdriver/protocol/commands/RequestDeviceInfoCommand.dart';
 import 'package:dgtdriver/protocol/commands/SendClockAscii.dart';
 import 'package:dgtdriver/protocol/commands/SendClockBeep.dart';
@@ -37,6 +37,7 @@ class DGTBoard {
   Stream<DGTMessage> _inputStream;
   List<int> _buffer;
 
+  List<int> _developerKey;
   String _serialNumber;
   String _version;
   Map<String, Piece> _boardState;
@@ -46,8 +47,9 @@ class DGTBoard {
 
   DGTBoard();
 
-  Future<void> init(DGTCommunicationClient client, { Duration initialDelay = const Duration(milliseconds: 300) }) async {
+  Future<void> init(DGTCommunicationClient client, { Duration initialDelay = const Duration(milliseconds: 300), List<int> developerKey = const [190, 245, 174, 221, 169, 95]}) async {
     _client = client;
+    _developerKey = developerKey;
 
     _client.receiveStream.listen(_handleInputStream);
     _inputStreamController = new StreamController<DGTMessage>();
@@ -80,12 +82,15 @@ class DGTBoard {
     else
       _buffer.addAll(chunk);
 
+    print(_buffer);
+
     try {
       DGTMessage message = DGTMessage.parse(_buffer);
       _inputStreamController.add(message);
       _buffer.removeRange(0, message.getLength());
-      print("Received valid message: " + message.getCode().toString());
-      print("-> " + message.getMessage().toString());
+      print(">" + message.getMessage().toString());
+      // print("Received valid message: " + message.getCode().toString());
+      // print("-> " + message.getMessage().toString());
     } on DGTInvalidMessageException catch (e) {
       _buffer = skipBadBytes(1, _buffer);
       _inputStreamController.addError(e);
@@ -101,6 +106,9 @@ class DGTBoard {
       // print("Unknown parse-error: " + err.toString());
       _inputStreamController.addError(err);
     }
+
+    print(_buffer);
+    print("done with chunk ...");
   }
 
   Stream<DGTMessage> getInputStream() {
@@ -122,7 +130,7 @@ class DGTBoard {
     _version = await GetVersionCommand().request(_client, _inputStream);
 
     if (isPegasusBoard) {
-      await MagicPegasusHandshakeCommand().send(_client);
+      await AuthorizeWithDeveloperKey(_developerKey).send(_client);
       _pegasusDeviceInfo = await RequestDeviceInfoCommand().request(_client, _inputStream);
       await SendResetCommand().send(_client);
     }
