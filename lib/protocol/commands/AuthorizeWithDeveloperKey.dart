@@ -10,6 +10,6 @@ class AuthorizeWithDeveloperKey extends DataCommand<void> {
   AuthorizeWithDeveloperKey(this.developerKey);
 
   Future<List<int>> data() async {
-    return developerKey;
+    return [...developerKey, 0];
   }
 }
