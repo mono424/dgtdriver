@@ -1,3 +1,7 @@
+## [0.2.1] - Add DGT Pegasus DeveloperKey 0 termination
+
+* Add DGT Pegasus DeveloperKey 0 termination
+
 ## [0.2.0] - Add DGT Pegasus DeveloperKey Option
 
 * Add DGT Pegasus DeveloperKey Option
