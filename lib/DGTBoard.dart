@@ -150,7 +150,7 @@ class DGTBoard {
   }
 
   bool get isPegasusBoard {
-    return _version == "1.0";
+    return _version.startsWith("1.");
   }
 
   String get getPegasusDeviceInfo {
