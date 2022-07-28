@@ -1,3 +1,7 @@
+## [0.2.2] - Update version detection for pegasus
+
+* Add detection for newer DGT Pegasus Boards
+
 ## [0.2.1] - Add DGT Pegasus DeveloperKey 0 termination
 
 * Add DGT Pegasus DeveloperKey 0 termination
