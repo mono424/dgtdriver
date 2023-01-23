@@ -1,6 +1,6 @@
 name: dgtdriver
 description: A DGT-Chessboard Driver written in pure Dart
-version: 0.2.2
+version: 0.2.3
 repository: https://github.com/mono424/dgtdriver
 homepage: https://khad.im
 

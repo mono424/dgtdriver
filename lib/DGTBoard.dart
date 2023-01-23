@@ -42,12 +42,17 @@ class DGTBoard {
   String _version;
   Map<String, Piece> _boardState;
   Map<String, Piece> _lastSeen;
+  DeviceTypeOverwrite _overwriteDeviceType;
 
   String _pegasusDeviceInfo;
 
   DGTBoard();
 
-  Future<void> init(DGTCommunicationClient client, { Duration initialDelay = const Duration(milliseconds: 300), List<int> developerKey = const [190, 245, 174, 221, 169, 95]}) async {
+  Future<void> init(DGTCommunicationClient client, {
+    Duration initialDelay = const Duration(milliseconds: 300),
+    List<int> developerKey = const [190, 245, 174, 221, 169, 95],
+    DeviceTypeOverwrite overwriteDeviceType = DeviceTypeOverwrite.None,
+  }) async {
     _client = client;
     _developerKey = developerKey;
 
@@ -150,6 +155,12 @@ class DGTBoard {
   }
 
   bool get isPegasusBoard {
+    if (_overwriteDeviceType == DeviceTypeOverwrite.DGTClassic) {
+      return false;
+    } else if (_overwriteDeviceType == DeviceTypeOverwrite.DGTPegasus) {
+      return true;
+    }
+
     return _version.startsWith("1.");
   }
 

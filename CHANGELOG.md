@@ -1,3 +1,7 @@
+## [0.2.3] - Added deviceType overwrites
+
+* Add possibility to overwrite device types
+
 ## [0.2.2] - Update version detection for pegasus
 
 * Add detection for newer DGT Pegasus Boards
