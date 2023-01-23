@@ -5,6 +5,7 @@ import 'package:dgtdriver/DGTCommunicationClient.dart';
 import 'package:dgtdriver/DGTMessage.dart';
 import 'package:dgtdriver/models/BatteryStatus.dart';
 import 'package:dgtdriver/models/ClockMessage.dart';
+import 'package:dgtdriver/models/DeviceTypeOverwrite.dart';
 import 'package:dgtdriver/models/FieldUpdate.dart';
 import 'package:dgtdriver/models/LEDPattern.dart';
 import 'package:dgtdriver/models/Piece.dart';
