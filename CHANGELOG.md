@@ -1,3 +1,5 @@
+## [0.2.4] - Fix issue
+
 ## [0.2.3] - Added deviceType overwrites
 
 * Add possibility to overwrite device types
