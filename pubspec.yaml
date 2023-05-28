@@ -5,4 +5,4 @@ repository: https://github.com/mono424/dgtdriver
 homepage: https://khad.im
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.18.0 <3.0.0"
